@@ -51,12 +51,23 @@ const products = [
 
 function Home() {
   const [productList, setProductList] = useState(products);
+
+  function changePrice(id) {
+    let products = structuredClone(productList);
+    let item = products.find((product) => product.id === id);
+    item.price += 10;
+    setProductList(products);
+  }
   return (
     <>
       <div className="container">
         <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
           {productList.map((product) => (
-            <Product product={product} key={product.id} />
+            <Product
+              product={product}
+              key={product.id}
+              changePrice={changePrice}
+            />
           ))}
         </div>
       </div>
