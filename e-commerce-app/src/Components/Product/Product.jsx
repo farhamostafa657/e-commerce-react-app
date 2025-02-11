@@ -1,4 +1,4 @@
-function Product({ product, changePrice }) {
+function Product({ product, onChangePrice, onDeleteItem }) {
   return (
     <>
       <div className="col ">
@@ -15,11 +15,16 @@ function Product({ product, changePrice }) {
             <div className="d-flex flex-column w-100 justify-content-center align-items-center">
               <button
                 className="w-100 btn btn-dark mb-2"
-                onClick={() => changePrice(product.id)}
+                onClick={() => onChangePrice(product.id)}
               >
                 Update Price
               </button>
-              <button className="w-100 btn btn-dark">Delete item</button>
+              <button
+                className="w-100 btn btn-dark"
+                onClick={() => onDeleteItem(product.id)}
+              >
+                Delete item
+              </button>
             </div>
           </div>
         </div>

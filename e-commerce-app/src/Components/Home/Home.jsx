@@ -52,6 +52,12 @@ const products = [
 function Home() {
   const [productList, setProductList] = useState(products);
 
+  function deleteItem(id) {
+    let products = structuredClone(productList);
+    let newProducts = products.filter((product) => product.id != id);
+    setProductList(newProducts);
+  }
+
   function changePrice(id) {
     let products = structuredClone(productList);
     let item = products.find((product) => product.id === id);
@@ -66,7 +72,8 @@ function Home() {
             <Product
               product={product}
               key={product.id}
-              changePrice={changePrice}
+              onChangePrice={changePrice}
+              onDeleteItem={deleteItem}
             />
           ))}
         </div>
