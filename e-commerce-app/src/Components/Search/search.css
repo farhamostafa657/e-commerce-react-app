@@ -1,0 +1,10 @@
+.inputC {
+  border: 2px solid black;
+  outline: none;
+}
+
+.inputC:focus {
+  border: none;
+  outline: none;
+  box-shadow: 0 0 5px 2px #283618 !important;
+}

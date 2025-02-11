@@ -5,6 +5,7 @@ import product2 from "../../assets/images/product2.jpg";
 import product3 from "../../assets/images/product3.jpg";
 import product4 from "../../assets/images/product4.jpg";
 import product5 from "../../assets/images/product5.jpg";
+import Search from "../Search/Search";
 
 const products = [
   {
@@ -64,8 +65,16 @@ function Home() {
     item.price += 10;
     setProductList(products);
   }
+
+  function searchProduct(value) {
+    let newProducts = products.filter((product) =>
+      product.name.toLowerCase().includes(value.toLowerCase())
+    );
+    setProductList(newProducts);
+  }
   return (
     <>
+      <Search searchProduct={searchProduct} />
       <div className="container">
         <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
           {productList.map((product) => (
