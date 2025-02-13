@@ -8,7 +8,8 @@ import Category from "./Components/Ctegory/Category";
 import NotFound from "./Components/NotFound/NotFound";
 
 // pallete url https://coolors.co/palette/606c38-283618-fefae0-dda15e-bc6c25
-
+// npm i react-router-dom to make routing
+// npm i react-spinners  for loader
 function App() {
   const routes = createBrowserRouter([
     {

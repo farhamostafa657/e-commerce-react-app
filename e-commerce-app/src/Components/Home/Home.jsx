@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Product from "../Product/Product";
 import product1 from "../../assets/images/product1.jpg";
 import product2 from "../../assets/images/product2.jpg";
@@ -6,6 +6,7 @@ import product3 from "../../assets/images/product3.jpg";
 import product4 from "../../assets/images/product4.jpg";
 import product5 from "../../assets/images/product5.jpg";
 import Search from "../Search/Search";
+import axios from "axios";
 
 const products = [
   {
@@ -51,7 +52,7 @@ const products = [
 ];
 
 function Home() {
-  const [productList, setProductList] = useState(products);
+  const [productList, setProductList] = useState([]);
 
   function deleteItem(id) {
     let products = structuredClone(productList);
@@ -72,11 +73,26 @@ function Home() {
     );
     setProductList(newProducts);
   }
+
+  // npm i axios   to speak with apis
+
+  async function getProducts() {
+    try {
+      let { data } = await axios.get("https://fakestoreapi.com/products");
+      setProductList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getProducts();
+  }, []);
   return (
     <>
       <Search searchProduct={searchProduct} />
       <div className="container">
-        <div className="row row-cols-1 row-cols-md-3 g-4 mt-3">
+        <div className="row row-cols-1 row-cols-md-3 g-4">
           {productList.map((product) => (
             <Product
               product={product}
