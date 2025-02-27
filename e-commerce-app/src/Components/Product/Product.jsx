@@ -2,16 +2,17 @@ function Product({ product, onChangePrice, onDeleteItem }) {
   return (
     <>
       <div className="col">
-        <div className="card h-75 shadow bg-body-tertiary rounded  ">
+        <div className="card h-100  bg-body-tertiary rounded  ">
           <img
             src={product.image}
             className="card-img-top w-100 h-50 rounded"
             alt={product.title}
           />
-          <div className="card-body">
+          <div className="card-body d-flex flex-column justify-content-around ">
             <h5 className="card-title">
               {product.title.split(" ").splice(0, 2).join(" ")}
             </h5>
+
             <div className="d-flex justify-content-between h-25 align-items-center">
               <p className="card-text">{product.price} $</p>
               <p className="card-text">
@@ -20,7 +21,7 @@ function Product({ product, onChangePrice, onDeleteItem }) {
               </p>
             </div>
 
-            <div className="d-flex flex-column w-100 justify-content-center align-items-center">
+            <div className="d-flex flex-column w-100 justify-content-center align-items-center ">
               <button
                 className="w-100 btn btn-dark mb-2"
                 onClick={() => onChangePrice(product.id)}

@@ -1,0 +1,16 @@
+.cards {
+  background-color: #fefae0;
+  box-shadow: 7px 5px 5px 1px #dda15e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cards:hover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: #dda15e;
+  box-shadow: 7px 5px 5px 1px #bc6c25;
+}

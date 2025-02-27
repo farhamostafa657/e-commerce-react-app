@@ -7,6 +7,7 @@ import product4 from "../../assets/images/product4.jpg";
 import product5 from "../../assets/images/product5.jpg";
 import Search from "../Search/Search";
 import axios from "axios";
+import Looder from "../Looder/looder";
 
 const products = [
   {
@@ -90,19 +91,25 @@ function Home() {
   }, []);
   return (
     <>
-      <Search searchProduct={searchProduct} />
-      <div className="container">
-        <div className="row row-cols-1 row-cols-md-3 g-4">
-          {productList.map((product) => (
-            <Product
-              product={product}
-              key={product.id}
-              onChangePrice={changePrice}
-              onDeleteItem={deleteItem}
-            />
-          ))}
+      {productList.length == 0 ? (
+        <Looder />
+      ) : (
+        <div>
+          <Search searchProduct={searchProduct} />
+          <div className="container">
+            <div className="row row-cols-1 row-cols-md-3 g-4">
+              {productList.map((product) => (
+                <Product
+                  product={product}
+                  key={product.id}
+                  onChangePrice={changePrice}
+                  onDeleteItem={deleteItem}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

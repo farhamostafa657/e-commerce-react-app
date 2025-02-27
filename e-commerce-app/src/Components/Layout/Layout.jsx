@@ -3,12 +3,12 @@ import NavBar from "../NavBar/NavBar";
 
 function Layout() {
   return (
-    <>
+    <div className="bg-black h-100">
       <NavBar />
-      <div className="container">
+      <div className="container ">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }
 

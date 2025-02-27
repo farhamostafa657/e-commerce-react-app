@@ -10,6 +10,8 @@ import NotFound from "./Components/NotFound/NotFound";
 // pallete url https://coolors.co/palette/606c38-283618-fefae0-dda15e-bc6c25
 // npm i react-router-dom to make routing
 // npm i react-spinners  for loader
+//formic and react hook form  to handle form
+//npm i formic --save
 function App() {
   const routes = createBrowserRouter([
     {
@@ -25,10 +27,10 @@ function App() {
     },
   ]);
   return (
-    <>
+    <div>
       <RouterProvider router={routes}></RouterProvider>
       {/* <Home /> */}
-    </>
+    </div>
   );
 }
 
