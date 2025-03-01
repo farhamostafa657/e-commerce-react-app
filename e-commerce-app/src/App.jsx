@@ -12,6 +12,7 @@ import NotFound from "./Components/NotFound/NotFound";
 // npm i react-spinners  for loader
 //formic and react hook form  to handle form
 //npm i formic --save
+//npm i yup for validation
 function App() {
   const routes = createBrowserRouter([
     {
