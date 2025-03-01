@@ -12,6 +12,7 @@ function Register() {
 
   let registerForm = useFormik({
     initialValues,
+    validate,
     onSubmit: (values) => {
       console.log(values);
     },
@@ -21,11 +22,11 @@ function Register() {
     const errors = {};
 
     if (values.userName == "") {
-      errors.name = "requerid";
+      errors.userName = "requerid";
     } else if (values.userName.length < 3) {
-      errors.name = "username must be more than 3 char ";
+      errors.userName = "username must be more than 3 char ";
     } else if (values.userName.length > 15) {
-      errors.name = "username must be less than 15 char ";
+      errors.userName = "username must be less than 15 char ";
     }
 
     if (values.email == "") {
@@ -59,6 +60,10 @@ function Register() {
     if (values.photo == "") {
       errors.photo = "requerid";
     }
+
+    console.log(errors);
+
+    return errors;
   }
 
   return (
@@ -77,9 +82,17 @@ function Register() {
                 name="userName"
                 value={registerForm.values.userName}
                 onChange={registerForm.handleChange}
+                onBlur={registerForm.handleBlur}
               />
               <label htmlFor="floatingInput">User Name</label>
             </div>
+            {registerForm.touched.userName && registerForm.errors.userName ? (
+              <div class="alert alert-danger" role="alert">
+                {registerForm.errors.userName}
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="form-floating mb-3">
               <input
@@ -90,9 +103,17 @@ function Register() {
                 name="email"
                 value={registerForm.values.email}
                 onChange={registerForm.handleChange}
+                onBlur={registerForm.handleBlur}
               />
               <label htmlFor="floatingPassword">email</label>
             </div>
+            {registerForm.errors.email && registerForm.errors.email ? (
+              <div class="alert alert-danger" role="alert">
+                {registerForm.errors.email}
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="form-floating mb-3">
               <input
@@ -103,9 +124,17 @@ function Register() {
                 name="password"
                 value={registerForm.values.password}
                 onChange={registerForm.handleChange}
+                onBlur={registerForm.handleBlur}
               />
               <label htmlFor="floatingPassword">Password</label>
             </div>
+            {registerForm.errors.password && registerForm.touched.password ? (
+              <div class="alert alert-danger" role="alert">
+                {registerForm.errors.password}
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="form-floating mb-3">
               <input
@@ -116,9 +145,18 @@ function Register() {
                 name="confirmedpassword"
                 value={registerForm.values.confirmedpassword}
                 onChange={registerForm.handleChange}
+                onBlur={registerForm.handleBlur}
               />
               <label htmlFor="floatingPassword">Repassword</label>
             </div>
+            {registerForm.errors.confirmedpassword &&
+            registerForm.touched.confirmedpassword ? (
+              <div class="alert alert-danger" role="alert">
+                {registerForm.errors.confirmedpassword}
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="form-floating mb-3">
               <input
@@ -129,9 +167,17 @@ function Register() {
                 name="phone"
                 value={registerForm.values.phone}
                 onChange={registerForm.handleChange}
+                onBlur={registerForm.handleBlur}
               />
               <label htmlFor="phone">phone</label>
             </div>
+            {registerForm.errors.phone && registerForm.touched.phone ? (
+              <div class="alert alert-danger" role="alert">
+                {registerForm.errors.phone}
+              </div>
+            ) : (
+              ""
+            )}
 
             <div className="form-floating mb-3">
               <input
@@ -142,9 +188,17 @@ function Register() {
                 name="photo"
                 value={registerForm.values.photo}
                 onChange={registerForm.handleChange}
+                onBlur={registerForm.handleBlur}
               />
               <label htmlFor="photo">Photo</label>
             </div>
+            {registerForm.errors.photo && registerForm.touched ? (
+              <div class="alert alert-danger" role="alert">
+                {registerForm.errors.photo}
+              </div>
+            ) : (
+              ""
+            )}
 
             <button className="btn btn-light primary mb-5 ">Regester</button>
           </form>
