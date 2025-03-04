@@ -1,4 +1,7 @@
+import axios from "axios";
 import { useFormik } from "formik";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as YUP from "yup";
 
 function Register() {
@@ -6,10 +9,12 @@ function Register() {
     userName: "",
     email: "",
     password: "",
-    confirmedpassword: "",
+    confirmedPassword: "",
     phone: "",
-    photo: "",
+    photo: null,
   };
+
+  const [apiError, setApiError] = useState(null);
 
   const validationSchema = YUP.object().shape({
     userName: YUP.string()
@@ -18,24 +23,62 @@ function Register() {
       .max(15, "must 15 char maximum"),
     email: YUP.string().email("invalid email").required("email is required"),
     password: YUP.string()
-      .matches(/^([A-Z][a-z0-9]{3,8})$/, "invalid email")
+      .matches(/^([A-Z][a-z0-9]{3,8})$/, "invalid password")
       .required("password is requered"),
-    confirmedpassword: YUP.string()
+    confirmedPassword: YUP.string()
       .oneOf(
         [YUP.ref("password")],
         "password and confermed password should be the same"
       )
       .required("confirmed password is required"),
-    phone: YUP.number().required("phone is required"),
-    photo: YUP.string().required("photo is required"),
+    phone: YUP.string().required("phone is required"),
+    photo: YUP.mixed()
+      .required("photo is required")
+      .test("fileType", "Only images are allowed", (value) => {
+        return (
+          value && ["image/jpeg", "image/png", "image/jpg"].includes(value.type)
+        );
+      })
+      .test("fileSize", "File size must be less than 3MB", (value) => {
+        return value && value.size <= 3 * 1024 * 1024; // الحد الأقصى 2MB
+      }),
   });
+
+  const navigate = useNavigate();
+
+  async function callSignUpApi(values) {
+    let formData;
+    try {
+      setApiError(null);
+      formData = new FormData();
+      formData.append("userName", values.userName);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("confirmedPassword", values.confirmedPassword);
+      formData.append("phone", values.phone);
+      formData.append("photo", values.photo);
+      let { data } = await axios.post(
+        "http://localhost:8888/auth/signUp",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      console.log(data);
+      if (data.message == "created") {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(values);
+      console.log(error.response.data.message);
+      setApiError(error.response.data.message);
+    }
+  }
 
   let registerForm = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
-    },
+    onSubmit: callSignUpApi,
   });
 
   // function validate(values) {
@@ -67,10 +110,10 @@ function Register() {
   //     errors.password = "invalid password";
   //   }
 
-  //   if (values.confirmedpassword == "") {
-  //     errors.confirmedpassword = "requerid";
-  //   } else if (values.confirmedpassword != values.password) {
-  //     errors.password = "confirmedpassword and password must be equal";
+  //   if (values.confirmedPassword == "") {
+  //     errors.confirmedPassword = "requerid";
+  //   } else if (values.confirmedPassword != values.password) {
+  //     errors.password = "confirmedPassword and password must be equal";
   //   }
 
   //   if (values.phone == "") {
@@ -93,6 +136,13 @@ function Register() {
           <h1 className="my-5 text-white">Sign up</h1>
 
           <form onSubmit={registerForm.handleSubmit}>
+            {apiError ? (
+              <div className="alert alert-danger" role="alert">
+                {apiError}
+              </div>
+            ) : (
+              ""
+            )}
             <div className="form-floating mb-3">
               <input
                 type="text"
@@ -162,17 +212,17 @@ function Register() {
                 className="form-control"
                 id="repassword"
                 placeholder="Repassword"
-                name="confirmedpassword"
-                value={registerForm.values.confirmedpassword}
+                name="confirmedPassword"
+                value={registerForm.values.confirmedPassword}
                 onChange={registerForm.handleChange}
                 onBlur={registerForm.handleBlur}
               />
               <label htmlFor="floatingPassword">Repassword</label>
             </div>
-            {registerForm.errors.confirmedpassword &&
-            registerForm.touched.confirmedpassword ? (
+            {registerForm.errors.confirmedPassword &&
+            registerForm.touched.confirmedPassword ? (
               <div className="alert alert-danger" role="alert">
-                {registerForm.errors.confirmedpassword}
+                {registerForm.errors.confirmedPassword}
               </div>
             ) : (
               ""
@@ -180,7 +230,7 @@ function Register() {
 
             <div className="form-floating mb-3">
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="phone"
                 placeholder="phone"
@@ -206,8 +256,13 @@ function Register() {
                 id="photot"
                 placeholder="photo"
                 name="photo"
-                value={registerForm.values.photo}
-                onChange={registerForm.handleChange}
+                accept="image/*"
+                onChange={(event) => {
+                  registerForm.setFieldValue(
+                    "photo",
+                    event.currentTarget.files[0]
+                  );
+                }}
                 onBlur={registerForm.handleBlur}
               />
               <label htmlFor="photo">Photo</label>
