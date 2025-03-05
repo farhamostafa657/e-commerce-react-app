@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as YUP from "yup";
+import { TokenCoteext } from "../../Context/TokenContext";
 
 function Login() {
   const initialValues = {
@@ -20,6 +21,7 @@ function Login() {
   });
 
   const navigate = useNavigate();
+  const { token, setToken } = useContext(TokenCoteext);
 
   async function callLoginApi(values) {
     try {
@@ -31,6 +33,8 @@ function Login() {
       );
       console.log(data);
       if (data.message == "created") {
+        localStorage.setItem("userToken", data.token);
+        setToken(data.token);
         navigate("/home");
       }
     } catch (error) {
